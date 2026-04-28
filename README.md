@@ -57,6 +57,25 @@ hasil optimize
 ![](assets/log_2.png)
 ![](assets/log_3.png)
 
+![](assets/all_student_courses.jpeg)
+![](assets/student_names.jpeg)
+![](assets/highest_gpa.jpeg)
+
+## Kesimpulan Perbandingan Hasil JMeter
+
+Berdasarkan hasil profiling sebelum dan sesudah optimasi:
+
+| Method | Old Execution Time (ms) | New Execution Time (ms) | Improvement |
+|--------|------------------------|------------------------|-------------|
+| `StudentService.getAllStudentsWithCourses()` | 3,700 | 42 | **-98.9%** |
+| `StudentController.seedStudents()` | 3,726 | 42 | **-98.9%** |
+| `StudentService.joinStudentNames()` | 0 | 60 | Added (baru diukur) |
+| `StudentController.allStudentName()` | 0 | 60 | Added (baru diukur) |
+| `StudentService.findStudentWithHighestGpa()` | 0 | 48 | Added (baru diukur) |
+| `StudentController.highestGpa()` | 0 | 48 | Added (baru diukur) |
+
+**Terdapat peningkatan performa yang sangat signifikan.** Endpoint `/all-student` mengalami penurunan waktu eksekusi sebesar **98.9%** — dari 3,700 ms menjadi hanya 42 ms. Hal ini disebabkan oleh penggantian N+1 queries dengan single `JOIN FETCH` query. Untuk endpoint `/all-student-name`, method `joinStudentNames` kini tercatat dengan waktu eksekusi 60 ms setelah optimasi menggunakan projection query. Sementara endpoint `/highest-gpa` tercatat 48 ms setelah optimasi menggunakan Spring Data derived query yang menggantikan iterasi manual seluruh data student di memori.
+
 ---
 
 ## Reflection
