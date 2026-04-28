@@ -10,6 +10,7 @@ import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -34,6 +35,7 @@ public class DataSeedService {
     public void seedStudent() {
         Faker faker = new Faker(new Locale("in-ID"));
 
+        List<Student> students = new ArrayList<>(NUMBER_OF_STUDENTS);
         for (int i = 0; i < NUMBER_OF_STUDENTS; i++) {
             Student student = new Student();
             student.setStudentCode(faker.code().ean8());
@@ -41,39 +43,43 @@ public class DataSeedService {
             student.setFaculty(faker.educator().course());
             student.setGpa(faker.number().randomDouble(2, 2, 4));
 
-            studentRepository.save(student);
+            students.add(student);
         }
+        studentRepository.saveAll(students);
     }
 
     public void seedCourse() {
         Faker faker = new Faker(new Locale("in-ID"));
+        List<Course> courses = new ArrayList<>(NUMBER_OF_COURSE);
         for (int i = 0; i < NUMBER_OF_COURSE; i++) {
             Course course = new Course();
             course.setCourseCode(faker.code().ean8());
             course.setName(faker.book().title());
             course.setDescription(faker.lorem().sentence());
 
-            courseRepository.save(course);
+            courses.add(course);
         }
+        courseRepository.saveAll(courses);
     }
 
     public void seedStudentCourses() {
         List<Student> students = studentRepository.findAll();
         List<Course> courses = courseRepository.findAll();
 
+        List<StudentCourse> studentCourses = new ArrayList<>(students.size() * 2);
+        Random random = new Random();
         for (Student student : students) {
-            List<Course> selectedCourses = new Random().ints(0, courses.size())
+            List<Course> selectedCourses = random.ints(0, courses.size())
                     .distinct()
                     .limit(2)
                     .mapToObj(courses::get)
                     .collect(Collectors.toList());
 
             for (Course course : selectedCourses) {
-                StudentCourse studentCourse = new StudentCourse(student, course);
-                studentCourseRepository.save(studentCourse);
+                studentCourses.add(new StudentCourse(student, course));
             }
         }
-
+        studentCourseRepository.saveAll(studentCourses);
     }
 
 }
