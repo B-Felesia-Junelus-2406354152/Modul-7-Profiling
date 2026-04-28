@@ -18,3 +18,9 @@
 ![](assets/view_result_in_table_3.png)
 ![](assets/graph_result_3.png)
 ![](assets/summary_report_3.png)
+
+![](assets/command_save.png)
+
+![](assets/test_result_1.png)
+![](assets/test_result_2.png)
+![](assets/test_result_3.png)
