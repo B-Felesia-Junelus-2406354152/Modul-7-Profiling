@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.StringJoiner;
 
 /**
  * @author muhammad.khadafi
@@ -32,12 +31,8 @@ public class StudentService {
     }
 
     public String joinStudentNames() {
-        List<Student> students = studentRepository.findAll();
-        StringJoiner joiner = new StringJoiner(", ");
-        for (Student student : students) {
-            joiner.add(student.getName());
-        }
-        return joiner.toString();
+        List<String> names = studentRepository.findAllNames();
+        return String.join(", ", names);
     }
 }
 
