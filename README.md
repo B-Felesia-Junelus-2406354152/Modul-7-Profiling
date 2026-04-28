@@ -1,3 +1,5 @@
+semua hasilnya bisa dilihat di folder result
+
 ![](assets/test_plan_1.png)
 ![](assets/all_student.png)
 ![](assets/view_result_tree_1.png)
